@@ -17,7 +17,7 @@ import UIKit
     @objc optional func holdSelectButton()
 }
 
-class iPodView: UIView {
+class ClickWheelView: UIView {
     
     var controlView: UIView = {
         let control = UIView()
@@ -164,7 +164,7 @@ class iPodView: UIView {
         
     }
     
-    func setControlColor(color: ColorModel) {
+    func setControlColor(color: ThemeModel) {
         controlView.backgroundColor = color.controlColor
         controlView.layer.borderColor = color.borderColor.cgColor
         

@@ -25,7 +25,6 @@ class SongsController: UIViewController {
         songs.rowHeight = 50
         return songs
     }()
-    private let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
     private var listSongs = [MPMediaItem]()
     private var currentRow = 0
     
@@ -38,15 +37,17 @@ class SongsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
-        
-        let theme = UserDefaults.standard.value(forKey: "theme") as! Int
-        let bgColor = Theme.listTheme[theme].bgColor
-        songsTable.backgroundColor = bgColor
-        guard let selectedCell = songsTable.indexPathForSelectedRow else {return}
+        MenuController.iPod.clickWheelView.delegate = self
+        songsTable.backgroundColor = Theme.currentMode().bgColor
+
         songsTable.reloadData()
-        songsTable.selectRow(at: selectedCell, animated: true, scrollPosition: .none)
+        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        songsTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
+        print("viewDidAppear")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,6 +73,7 @@ class SongsController: UIViewController {
         if MusicPlayer.mediaPlayer.nowPlayingItem == listSongs[currentRow] {
             let nextView = NowPlayingController()
             self.navigationController?.pushViewController(nextView, animated: true)
+            print("Now Playing View")
         } else {
             var songsArray = Array(listSongs[currentRow...])
             songsArray.append(contentsOf: Array(listSongs[..<currentRow]))

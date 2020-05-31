@@ -28,11 +28,17 @@ class SettingsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        settingTable.reloadData()
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
+        MenuController.iPod.clickWheelView.delegate = self
+        settingTable.backgroundColor = Theme.currentMode().bgColor
+        if let selectedCell = settingTable.indexPathForSelectedRow {
+            settingTable.reloadData()
+            settingTable.selectRow(at: selectedCell, animated: true, scrollPosition: .none)
+        }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        settingTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear")
         super.viewWillDisappear(animated)
@@ -48,12 +54,11 @@ class SettingsController: UIViewController {
         settingTable.dataSource = self
         view.addSubview(settingTable)
         settingTable.frame = view.frame
+        settingTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
     }
     
     func handleSelectButton() {
-        print(currentRow)
         let theme = Theme.listTheme
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
         switch currentRow {
         case 0:
             var shuffleName = UserDefaults.standard.value(forKey: "shuffle") as! String
@@ -80,19 +85,26 @@ class SettingsController: UIViewController {
             UserDefaults.standard.set(repeateName, forKey: "repeat")
             settingTable.reloadData()
         case 2:
-            let themes = Theme.listTheme
-            var currentTheme = UserDefaults.standard.value(forKey: "theme") as! Int
-            currentTheme += 1
-            if currentTheme > themes.count - 1 {
-                currentTheme = 0
+            let currentMode = UserDefaults.standard.value(forKey: "mode") as! String
+            var nextMode = ""
+            if currentMode == "Light" {
+                nextMode = "Dark"
+            } else {
+                nextMode = "Light"
             }
-            UserDefaults.standard.set(currentTheme, forKey: "theme")
+            UserDefaults.standard.set(nextMode, forKey: "mode")
             settingTable.reloadData()
-            sceneDelegate.changeTheme(color: theme[currentTheme])
+        case 3:
+            let themesView = ThemeSelectController()
+            self.navigationController?.pushViewController(themesView, animated: true)
         default:
             print("Default")
-            sceneDelegate.changeTheme(color: theme[1])
+            MenuController.iPod.changeTheme(color: theme[1])
         }
+        
+        settingTable.backgroundColor = Theme.currentMode().bgColor
+        settingTable.reloadData()
+        settingTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
     }
 }
 
@@ -105,19 +117,27 @@ extension SettingsController: UITableViewDataSource {
         let item = settings[indexPath.row]
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "settingCell")
         cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .gray
-        cell.imageView?.image = item.image
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = Theme.currentTheme().borderColor
+        cell.selectedBackgroundView = bgColorView
+        
+        let mode = Theme.currentMode()
+        cell.backgroundColor = mode.bgColor
+        cell.textLabel?.textColor = mode.textColor
+        cell.detailTextLabel?.textColor = mode.textColor
+        cell.imageView?.image = item.image.withTintColor(mode.textColor, renderingMode: .alwaysOriginal)
         cell.textLabel?.text = item.title
+        
         var description = ""
         switch item.title {
         case "Shuffle":
             let shuffleName = UserDefaults.standard.value(forKey: "shuffle") as! String
-                   switch shuffleName {
-             case "square":
-                 description = "Off"
-             default:
-                 description = "All"
-             }
+            switch shuffleName {
+            case "square":
+                description = "Off"
+            default:
+                description = "On"
+            }
         case "Repeat":
             let repeateName = UserDefaults.standard.value(forKey: "repeat") as! String
             switch repeateName {
@@ -130,6 +150,11 @@ extension SettingsController: UITableViewDataSource {
             default:
                 description = "All"
             }
+            
+        case "Appearance":
+            let currentMode = UserDefaults.standard.value(forKey: "mode") as! String
+            description = currentMode
+            
         case "Theme":
             let currentTheme = UserDefaults.standard.value(forKey: "theme") as! Int
             description = String(currentTheme + 1)

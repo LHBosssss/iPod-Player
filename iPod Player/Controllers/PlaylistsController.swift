@@ -33,17 +33,15 @@ class PlaylistsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
+        MenuController.iPod.clickWheelView.delegate = self
+        playlistsTable.backgroundColor = Theme.currentMode().bgColor
+
+            playlistsTable.reloadData()
         
-        let theme = UserDefaults.standard.value(forKey: "theme") as! Int
-        let bgColor = Theme.listTheme[theme].bgColor
-        playlistsTable.backgroundColor = bgColor
-        guard let selectedCell = playlistsTable.indexPathForSelectedRow else {return}
-        playlistsTable.reloadData()
-        playlistsTable.selectRow(at: selectedCell, animated: true, scrollPosition: .none)
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        playlistsTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear")
         super.viewWillDisappear(animated)
@@ -60,8 +58,6 @@ class PlaylistsController: UIViewController {
         playlistsTable.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
         view.addSubview(playlistsTable)
         playlistsTable.frame = view.frame
-        print(playlistsTable.frame)
-        print(self.view.frame)
     }
     
     func getPlaylists() {

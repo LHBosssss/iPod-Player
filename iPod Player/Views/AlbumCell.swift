@@ -27,7 +27,7 @@ class AlbumCell: UICollectionViewCell {
         didSet {
             albumTitle.text = "All Songs"
             let config = UIImage.SymbolConfiguration(pointSize: 150)
-            let defaultIcon = UIImage(systemName: "music.note.list", withConfiguration: config)!.withTintColor(UIColor.label, renderingMode: .alwaysOriginal)
+            let defaultIcon = UIImage(systemName: "music.note.list", withConfiguration: config)!.withTintColor(Theme.currentMode().textColor, renderingMode: .alwaysOriginal)
             albumImage.image = defaultIcon
         }
     }
@@ -54,8 +54,8 @@ class AlbumCell: UICollectionViewCell {
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textAlignment = .center
         text.numberOfLines = 0
-        text.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        text.textColor = UIColor.white
+        text.backgroundColor = Theme.currentMode().bgColor.withAlphaComponent(0.7)
+        text.textColor = Theme.currentMode().textColor
         text.font = UIFont.systemFont(ofSize: 20, weight: .light)
         return text
     }()
@@ -65,8 +65,8 @@ class AlbumCell: UICollectionViewCell {
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textAlignment = .center
         text.numberOfLines = 0
-        text.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        text.textColor = UIColor.white
+        text.backgroundColor = Theme.currentMode().bgColor.withAlphaComponent(0.7)
+        text.textColor = Theme.currentMode().textColor
         text.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         return text
     }()
@@ -76,8 +76,8 @@ class AlbumCell: UICollectionViewCell {
         count.isEnabled = false
         count.frame = CGRect(x: 10, y: 10, width: 40, height: 40)
         count.layer.cornerRadius = 20
-        count.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        count.setTitleColor(UIColor.white, for: .normal)
+        count.backgroundColor = Theme.currentMode().bgColor.withAlphaComponent(0.7)
+        count.setTitleColor(Theme.currentMode().textColor, for: .normal)
         count.layer.masksToBounds = true
         return count
     }()

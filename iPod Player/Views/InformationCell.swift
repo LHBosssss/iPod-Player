@@ -25,7 +25,7 @@ class InformationCell: UITableViewCell {
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textAlignment = .left
         text.numberOfLines = 1
-        text.textColor = UIColor.label
+        text.textColor = Theme.currentMode().textColor
         text.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         return text
     }()
@@ -35,7 +35,7 @@ class InformationCell: UITableViewCell {
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textAlignment = .left
         text.numberOfLines = 1
-        text.textColor = UIColor.label
+        text.textColor = Theme.currentMode().textColor
         text.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         return text
     }()
@@ -53,12 +53,15 @@ class InformationCell: UITableViewCell {
         let selectedView = UIView()
         selectedView.backgroundColor = Theme.currentTheme().borderColor
         self.selectedBackgroundView = selectedView
+        
+        self.backgroundColor = Theme.currentMode().bgColor
         self.addSubview(cellImage)
         cellImage.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
         cellImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         cellImage.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cellImage.widthAnchor.constraint(equalToConstant: 40).isActive = true
         cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        
         self.addSubview(cellTitle)
         cellTitle.bottomAnchor.constraint(equalTo: centerYAnchor).isActive = true
         cellTitle.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 20).isActive = true

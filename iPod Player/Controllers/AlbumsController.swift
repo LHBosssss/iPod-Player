@@ -37,10 +37,13 @@ class AlbumsController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
+        MenuController.iPod.clickWheelView.delegate = self
+        collectionView.backgroundColor = Theme.currentMode().bgColor
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        collectionView.selectItem(at: IndexPath(row: currentItem, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+        print("viewDidAppear")
+    }
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear")
         super.viewWillDisappear(animated)
@@ -54,7 +57,6 @@ class AlbumsController: UICollectionViewController {
         print(view.frame)
         print(collectionView.frame)
         self.collectionView.frame = CGRect(x: 20, y: 50, width: view.frame.width - 40, height: view.frame.height / 2 - 50)
-        collectionView.backgroundColor = UIColor.systemBackground
     }
     
     func handleSelectButton() {

@@ -33,10 +33,13 @@ class ArtistsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
+        MenuController.iPod.clickWheelView.delegate = self
+        artistsTable.backgroundColor = Theme.currentMode().bgColor
+
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+          artistsTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
+      }
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear")
         super.viewWillDisappear(animated)
@@ -55,8 +58,6 @@ class ArtistsController: UIViewController {
         artistsTable.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
         view.addSubview(artistsTable)
         artistsTable.frame = view.frame
-        print(artistsTable.frame)
-        print(self.view.frame)
     }
     
     func getArtists() {

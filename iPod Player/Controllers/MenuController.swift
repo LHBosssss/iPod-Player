@@ -11,10 +11,13 @@ import MediaPlayer
 
 class MenuController: UIViewController {
     
+    public static var iPod = iPodView()
+    
     private let menuTable: UITableView = {
         let menu = UITableView()
         menu.translatesAutoresizingMaskIntoConstraints = false
         menu.rowHeight = 50
+        menu.separatorStyle = .none
         return menu
     }()
     private var menu = Menu.listMenu
@@ -24,20 +27,21 @@ class MenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColor.white
         navigationController?.navigationBar.isHidden = true
-        setupMenuView()
         checkUserDefault()
+        setupMenuView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
-        guard let selectedCell = menuTable.indexPathForSelectedRow else {return}
-        menuTable.reloadData()
-        menuTable.selectRow(at: selectedCell, animated: true, scrollPosition: .none)
+        MenuController.iPod.clickWheelView.delegate = self
+        menuTable.backgroundColor = Theme.currentMode().bgColor
+            menuTable.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        menuTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -56,8 +60,11 @@ class MenuController: UIViewController {
         } else {
             UserDefaults.standard.set(0, forKey: "theme")
         }
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.changeTheme(color: Theme.listTheme[theme])
+        MenuController.iPod.changeTheme(color: Theme.listTheme[theme])
+        
+        if !isKeyPresentInUserDefaults(key: "mode") {
+            UserDefaults.standard.set("Light", forKey: "mode")
+        }
         
         if !isKeyPresentInUserDefaults(key: "shuffle") {
             MusicPlayer.mediaPlayer.shuffleMode = .songs
@@ -199,10 +206,13 @@ extension MenuController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = menu[indexPath.row]
+        let mode = Theme.currentMode()
         let cell = UITableViewCell(style: .default, reuseIdentifier: "menuCell")
-        cell.imageView?.image = model.image.withTintColor(UIColor.label, renderingMode: .alwaysOriginal)
+        cell.imageView?.image = model.image.withTintColor(mode.textColor, renderingMode: .alwaysOriginal)
         cell.textLabel?.text = model.title
         cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = mode.bgColor
+        cell.textLabel?.textColor = mode.textColor
         let bgColorView = UIView()
         bgColorView.backgroundColor = Theme.currentTheme().borderColor
         cell.selectedBackgroundView = bgColorView

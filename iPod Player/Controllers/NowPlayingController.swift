@@ -58,8 +58,8 @@ class NowPlayingController: UIViewController {
     
     private let trackTime: UISlider = {
         let time = UISlider()
-        time.maximumTrackTintColor = UIColor.systemGray
-        time.minimumTrackTintColor = UIColor.label
+        time.maximumTrackTintColor = UIColor.lightGray
+        time.minimumTrackTintColor = UIColor.darkGray
         time.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 6, weight: .bold)
         let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(UIColor.label, renderingMode: .alwaysOriginal)
@@ -126,8 +126,7 @@ class NowPlayingController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let sceneDelegate = UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate
-        sceneDelegate.iPodV.delegate = self
+        MenuController.iPod.clickWheelView.delegate = self
         updateNowPlayingView()
         setRepeatMode()
         setShuffleMode()
@@ -180,15 +179,20 @@ class NowPlayingController: UIViewController {
     }
     
     func updateNowPlayingView() {
+        let mode = Theme.currentMode()
+        contentView.backgroundColor = mode.bgColor
         guard let nowPlayingItem = MusicPlayer.mediaPlayer.nowPlayingItem else { return }
         songTitle.text = nowPlayingItem.title ?? "Không có Tên Bài hát"
+        songTitle.textColor = mode.textColor
         singerName.text = nowPlayingItem.artist ?? "Không có Tên Ca sĩ"
-        let musicIcon = UIImage(named: "note")!.withTintColor(UIColor.label, renderingMode: .alwaysOriginal)
+        singerName.textColor = mode.textColor
+        let musicIcon = UIImage(named: "note")!.withTintColor(mode.textColor, renderingMode: .alwaysTemplate)
         artworkView.image = nowPlayingItem.artwork?.image(at: CGSize(width: 300, height: 300)) ?? musicIcon
         let timeInt = Int(nowPlayingItem.playbackDuration)
         let minutes = timeInt / 60
         let seconds = timeInt % 60
         durationTime.text = "\(minutes >= 10 ? String(minutes) : "0" + String(minutes)):\(seconds >= 10 ? String(seconds) : "0" + String(seconds))"
+        durationTime.textColor = mode.textColor
         trackTime.minimumValue = 0
         trackTime.maximumValue = Float(nowPlayingItem.playbackDuration)
         
@@ -200,7 +204,7 @@ class NowPlayingController: UIViewController {
         } else {
             shuffleIcon.isHidden = false
             let config = UIImage.SymbolConfiguration(pointSize: 15)
-            shuffleIcon.image = UIImage(systemName: shuffleName, withConfiguration: config)!.withTintColor(UIColor.black, renderingMode: .alwaysOriginal)
+            shuffleIcon.image = UIImage(systemName: shuffleName, withConfiguration: config)!.withTintColor(mode.textColor, renderingMode: .alwaysOriginal)
         }
         
         let repeatName = UserDefaults.standard.value(forKey: "repeat") as! String
@@ -209,8 +213,12 @@ class NowPlayingController: UIViewController {
         } else {
             repeatIcon.isHidden = false
             let config = UIImage.SymbolConfiguration(pointSize: 15)
-            repeatIcon.image = UIImage(systemName: repeatName, withConfiguration: config)!.withTintColor(UIColor.black, renderingMode: .alwaysOriginal)
+            repeatIcon.image = UIImage(systemName: repeatName, withConfiguration: config)!.withTintColor(mode.textColor, renderingMode: .alwaysOriginal)
         }
+        currentTime.textColor = mode.textColor
+        let pauseIconConfig = UIImage.SymbolConfiguration(pointSize: 15)
+        pauseIcon.image = UIImage(systemName: "pause.fill", withConfiguration: pauseIconConfig)!.withTintColor(mode.textColor, renderingMode: .alwaysOriginal)
+        setNormalThumb()
     }
     
     func startUpdateCurrentTime() {
@@ -363,13 +371,13 @@ extension NowPlayingController: ControlRotationDelegate {
     
     func setLargeThumb() {
         let config = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold)
-        let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(UIColor.systemBlue, renderingMode: .alwaysOriginal)
+        let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(Theme.currentMode().textColor, renderingMode: .alwaysOriginal)
         self.trackTime.setThumbImage(thumbImage, for: .normal)
     }
     
     func setNormalThumb() {
         let config = UIImage.SymbolConfiguration(pointSize: 6, weight: .bold)
-        let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(UIColor.label, renderingMode: .alwaysOriginal)
+        let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(Theme.currentMode().textColor, renderingMode: .alwaysOriginal)
         self.trackTime.setThumbImage(thumbImage, for: .normal)
     }
 }

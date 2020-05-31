@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EF38C58D247FDF9600F9B95F /* ColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF38C58C247FDF9600F9B95F /* ColorModel.swift */; };
+		EF0A807A2483E6A300262CBD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A80792483E6A300262CBD /* Theme.swift */; };
+		EF0A807C2484040B00262CBD /* ThemeSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A807B2484040B00262CBD /* ThemeSelectController.swift */; };
+		EF1BF1A62483DCC6009AB63D /* iPodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1BF1A52483DCC6009AB63D /* iPodView.swift */; };
+		EF38C58D247FDF9600F9B95F /* ThemeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF38C58C247FDF9600F9B95F /* ThemeModel.swift */; };
 		EF3C517924824D09001BF7C7 /* InformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C517824824D09001BF7C7 /* InformationCell.swift */; };
 		EF4AC635247E45EE00E473B0 /* ArtistsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4AC634247E45EE00E473B0 /* ArtistsController.swift */; };
 		EF4AC637247E46ED00E473B0 /* ArtistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4AC636247E46ED00E473B0 /* ArtistModel.swift */; };
@@ -18,7 +21,7 @@
 		EF4C4195247B558A00045E29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4C4193247B558A00045E29 /* Main.storyboard */; };
 		EF4C4197247B558C00045E29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF4C4196247B558C00045E29 /* Assets.xcassets */; };
 		EF4C419A247B558C00045E29 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF4C4198247B558C00045E29 /* LaunchScreen.storyboard */; };
-		EF4C41A6247B64D200045E29 /* iPodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4C41A5247B64D200045E29 /* iPodView.swift */; };
+		EF4C41A6247B64D200045E29 /* ClickWheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4C41A5247B64D200045E29 /* ClickWheelView.swift */; };
 		EF741CEE247BC1FE00FC5461 /* SongModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF741CED247BC1FE00FC5461 /* SongModel.swift */; };
 		EF742A00247BB50C00A2A28B /* MenuCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7429FF247BB50C00A2A28B /* MenuCellModel.swift */; };
 		EF742A05247BB57300A2A28B /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF742A04247BB57300A2A28B /* MusicPlayer.swift */; };
@@ -33,7 +36,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EF38C58C247FDF9600F9B95F /* ColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorModel.swift; sourceTree = "<group>"; };
+		EF0A80792483E6A300262CBD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		EF0A807B2484040B00262CBD /* ThemeSelectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSelectController.swift; sourceTree = "<group>"; };
+		EF1BF1A52483DCC6009AB63D /* iPodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodView.swift; sourceTree = "<group>"; };
+		EF38C58C247FDF9600F9B95F /* ThemeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModel.swift; sourceTree = "<group>"; };
 		EF3C517824824D09001BF7C7 /* InformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationCell.swift; sourceTree = "<group>"; };
 		EF4AC634247E45EE00E473B0 /* ArtistsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsController.swift; sourceTree = "<group>"; };
 		EF4AC636247E46ED00E473B0 /* ArtistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistModel.swift; sourceTree = "<group>"; };
@@ -46,7 +52,7 @@
 		EF4C4196247B558C00045E29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF4C4199247B558C00045E29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EF4C419B247B558C00045E29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EF4C41A5247B64D200045E29 /* iPodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodView.swift; sourceTree = "<group>"; };
+		EF4C41A5247B64D200045E29 /* ClickWheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickWheelView.swift; sourceTree = "<group>"; };
 		EF741CED247BC1FE00FC5461 /* SongModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongModel.swift; sourceTree = "<group>"; };
 		EF7429FF247BB50C00A2A28B /* MenuCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCellModel.swift; sourceTree = "<group>"; };
 		EF742A04247BB57300A2A28B /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
@@ -99,7 +105,6 @@
 				EF4C4196247B558C00045E29 /* Assets.xcassets */,
 				EF4C4198247B558C00045E29 /* LaunchScreen.storyboard */,
 				EF4C419B247B558C00045E29 /* Info.plist */,
-				EF4C41A5247B64D200045E29 /* iPodView.swift */,
 				EF742A04247BB57300A2A28B /* MusicPlayer.swift */,
 				EF921777247F70B900A7C600 /* Menu.swift */,
 			);
@@ -114,7 +119,8 @@
 				EFD4B62F247BF27A0058560D /* AlbumModel.swift */,
 				EF9A5A91247E03EB00F6F748 /* PlaylistModel.swift */,
 				EF4AC636247E46ED00E473B0 /* ArtistModel.swift */,
-				EF38C58C247FDF9600F9B95F /* ColorModel.swift */,
+				EF38C58C247FDF9600F9B95F /* ThemeModel.swift */,
+				EF0A80792483E6A300262CBD /* Theme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -129,6 +135,7 @@
 				EF4AC634247E45EE00E473B0 /* ArtistsController.swift */,
 				EF4AC638247E934E00E473B0 /* NowPlayingController.swift */,
 				EF921779247FAA4E00A7C600 /* SettingsController.swift */,
+				EF0A807B2484040B00262CBD /* ThemeSelectController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -138,6 +145,8 @@
 			children = (
 				EFD4B653247BFD3D0058560D /* AlbumCell.swift */,
 				EF3C517824824D09001BF7C7 /* InformationCell.swift */,
+				EF4C41A5247B64D200045E29 /* ClickWheelView.swift */,
+				EF1BF1A52483DCC6009AB63D /* iPodView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,13 +222,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF38C58D247FDF9600F9B95F /* ColorModel.swift in Sources */,
+				EF38C58D247FDF9600F9B95F /* ThemeModel.swift in Sources */,
 				EF92177A247FAA4E00A7C600 /* SettingsController.swift in Sources */,
 				EFD4B654247BFD3D0058560D /* AlbumCell.swift in Sources */,
 				EF4AC639247E934E00E473B0 /* NowPlayingController.swift in Sources */,
+				EF0A807C2484040B00262CBD /* ThemeSelectController.swift in Sources */,
 				EF4C4192247B558A00045E29 /* MenuController.swift in Sources */,
 				EF4C418E247B558A00045E29 /* AppDelegate.swift in Sources */,
 				EF3C517924824D09001BF7C7 /* InformationCell.swift in Sources */,
+				EF1BF1A62483DCC6009AB63D /* iPodView.swift in Sources */,
 				EF742A05247BB57300A2A28B /* MusicPlayer.swift in Sources */,
 				EF9A5A94247E15A000F6F748 /* PlaylistsController.swift in Sources */,
 				EF4C4190247B558A00045E29 /* SceneDelegate.swift in Sources */,
@@ -227,12 +238,13 @@
 				EF4AC637247E46ED00E473B0 /* ArtistModel.swift in Sources */,
 				EF742A00247BB50C00A2A28B /* MenuCellModel.swift in Sources */,
 				EFD4B652247BFCFD0058560D /* AlbumsController.swift in Sources */,
+				EF0A807A2483E6A300262CBD /* Theme.swift in Sources */,
 				EF741CEE247BC1FE00FC5461 /* SongModel.swift in Sources */,
 				EF4AC635247E45EE00E473B0 /* ArtistsController.swift in Sources */,
 				EF921778247F70B900A7C600 /* Menu.swift in Sources */,
 				EF9A5A92247E03EB00F6F748 /* PlaylistModel.swift in Sources */,
 				EFD4B630247BF27A0058560D /* AlbumModel.swift in Sources */,
-				EF4C41A6247B64D200045E29 /* iPodView.swift in Sources */,
+				EF4C41A6247B64D200045E29 /* ClickWheelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
