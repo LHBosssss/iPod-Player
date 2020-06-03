@@ -40,11 +40,9 @@ struct ThemeModeModel {
 extension UIColor {
     public convenience init?(hex: String) {
         let r, g, b: CGFloat
-        print(hex)
         if hex.hasPrefix("#") {
             let start = hex.index(hex.startIndex, offsetBy: 1)
             let hexColor = String(hex[start...])
-            print(hexColor)
             if hexColor.count == 6 {
                 let scanner = Scanner(string: hexColor)
                 var hexNumber: UInt64 = 0

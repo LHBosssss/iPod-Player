@@ -305,12 +305,14 @@ class ClickWheelView: UIView {
     
     @objc func handleForwardButton() {
         MusicPlayer.mediaPlayer.skipToNextItem()
+        MusicPlayer.mediaPlayer.play()
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
     }
     
     @objc func handleBackwardButton() {
         MusicPlayer.mediaPlayer.skipToPreviousItem()
+        MusicPlayer.mediaPlayer.play()
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
     }

@@ -26,14 +26,15 @@ class NowPlayingController: UIViewController {
     }()
     
     private let artworkView: UIImageView = {
-        let artwork = UIImageView()
-        artwork.translatesAutoresizingMaskIntoConstraints = false
+        let artwork = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         artwork.contentMode = .scaleAspectFit
-        artwork.layer.masksToBounds = true
-        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
-        artwork.image = UIImage(systemName: "music.note", withConfiguration: config)
+        let modeColor = Theme.currentMode().textColor
+        let musicIcon = UIImage(named: "note")!.withTintColor(modeColor, renderingMode: .alwaysTemplate)
+        artwork.image = musicIcon
         return artwork
     }()
+    
+    private var circleProgress: CircularProgressView!
     
     private let songTitle: UILabel = {
         let title = UILabel()
@@ -41,7 +42,8 @@ class NowPlayingController: UIViewController {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = UIFont.systemFont(ofSize: 20, weight: .light)
         title.textColor = UIColor.label
-        title.numberOfLines = 0
+        title.numberOfLines = 1
+        title.adjustsFontSizeToFitWidth = true
         return title
     }()
     
@@ -116,16 +118,19 @@ class NowPlayingController: UIViewController {
             updateTrackTime?.invalidate()
         }
     }
+    
     private var isSeeking = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNowPlayingItem), name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlayPause), name: NSNotification.Name.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNowPlayingItem), name: Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlayPause), name: NSNotification.Name.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+        
         MenuController.iPod.clickWheelView.delegate = self
         updateNowPlayingView()
         setRepeatMode()
@@ -133,6 +138,10 @@ class NowPlayingController: UIViewController {
         shuffleIcon.setNeedsDisplay()
         repeatIcon.setNeedsDisplay()
         print("Now Playing Will Appear")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc private func handleNowPlayingItem() {
@@ -144,8 +153,10 @@ class NowPlayingController: UIViewController {
         print("handlePlayPause")
         if MusicPlayer.mediaPlayer.playbackState == .paused {
             pauseIcon.isHidden = false
+            circleProgress.pauseProgress()
         } else {
             pauseIcon.isHidden = true
+            circleProgress.resumeProgress()
         }
     }
     
@@ -188,16 +199,30 @@ class NowPlayingController: UIViewController {
         singerName.textColor = mode.textColor
         let musicIcon = UIImage(named: "note")!.withTintColor(mode.textColor, renderingMode: .alwaysTemplate)
         artworkView.image = nowPlayingItem.artwork?.image(at: CGSize(width: 300, height: 300)) ?? musicIcon
-        let timeInt = Int(nowPlayingItem.playbackDuration)
+        artworkView.makeRounded()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            self.circleProgress.setColor()
+            self.updateCircleProgress()
+            if MusicPlayer.mediaPlayer.playbackState != .playing {
+                self.circleProgress.pauseProgress()
+            } else {
+                self.circleProgress.resumeProgress()
+            }
+        }
+        
+        let time = Float(nowPlayingItem.playbackDuration)
+        print(time)
+        let timeInt = Int(round(time))
+        print(timeInt)
         let minutes = timeInt / 60
         let seconds = timeInt % 60
         durationTime.text = "\(minutes >= 10 ? String(minutes) : "0" + String(minutes)):\(seconds >= 10 ? String(seconds) : "0" + String(seconds))"
         durationTime.textColor = mode.textColor
         trackTime.minimumValue = 0
         trackTime.maximumValue = Float(nowPlayingItem.playbackDuration)
-        
+
         startUpdateCurrentTime()
-        
+
         let shuffleName = UserDefaults.standard.value(forKey: "shuffle") as! String
         if shuffleName == "square" {
             shuffleIcon.isHidden = true
@@ -235,6 +260,14 @@ class NowPlayingController: UIViewController {
         let seconds = timeInt % 60
         self.currentTime.text = "\(minutes >= 10 ? String(minutes) : "0" + String(minutes)):\(seconds >= 10 ? String(seconds) : "0" + String(seconds))"
     }
+    
+    func updateCircleProgress() {
+        circleProgress.setColor()
+        let nowTime = self.trackTime.value
+        let duration = self.trackTime.maximumValue + 1
+        circleProgress.setProgressWithAnimation(duration: TimeInterval(duration), value: Double(nowTime))
+    }
+    
     func setupView() {
         view.addSubview(contentView)
         contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
@@ -244,27 +277,27 @@ class NowPlayingController: UIViewController {
         
         // Current Time
         contentView.addSubview(currentTime)
-        currentTime.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
+        currentTime.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         currentTime.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15).isActive = true
         
         // Pause icon
         contentView.addSubview(pauseIcon)
         pauseIcon.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        pauseIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
-        currentTime.centerYAnchor.constraint(equalTo: pauseIcon.centerYAnchor).isActive = true
+        pauseIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+
         // Repeate icon
         contentView.addSubview(repeatIcon)
         repeatIcon.leadingAnchor.constraint(equalTo: pauseIcon.trailingAnchor, constant: 5).isActive = true
-        repeatIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
+        repeatIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         
         // Shuffle icon
         contentView.addSubview(shuffleIcon)
         shuffleIcon.trailingAnchor.constraint(equalTo: pauseIcon.leadingAnchor, constant: -5).isActive = true
-        shuffleIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
+        shuffleIcon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         
         // Duration Time
         contentView.addSubview(durationTime)
-        durationTime.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
+        durationTime.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         durationTime.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15).isActive = true
         
         // Track Progress
@@ -274,23 +307,31 @@ class NowPlayingController: UIViewController {
         trackTime.leadingAnchor.constraint(equalTo: currentTime.leadingAnchor).isActive = true
         trackTime.trailingAnchor.constraint(equalTo: durationTime.trailingAnchor).isActive = true
         
-        // Singer
-        contentView.addSubview(singerName)
-        singerName.bottomAnchor.constraint(equalTo: trackTime.topAnchor, constant: -5).isActive = true
-        singerName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50).isActive = true
-        singerName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50).isActive = true
         
         // Title
         contentView.addSubview(songTitle)
-        songTitle.bottomAnchor.constraint(equalTo: singerName.topAnchor).isActive = true
+        songTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         songTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
         songTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         
+        // Singer
+        contentView.addSubview(singerName)
+        singerName.topAnchor.constraint(equalTo: songTitle.bottomAnchor).isActive = true
+        singerName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50).isActive = true
+        singerName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50).isActive = true
+        
         // Artwork
         contentView.addSubview(artworkView)
-        artworkView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
-        artworkView.bottomAnchor.constraint(equalTo: songTitle.topAnchor, constant: -20).isActive =  true
-        artworkView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        contentView.layoutIfNeeded()
+        print(contentView.bounds)
+        let height = contentView.bounds.width
+        let x =  height / 2
+        let y = contentView.bounds.height / 2
+        artworkView.frame.size = CGSize(width: height * 3/4, height: height * 3/4)
+        artworkView.center = CGPoint(x: x, y: y)
+        
+        circleProgress = CircularProgressView(frame: artworkView.frame)
+        contentView.addSubview(circleProgress)
     }
     
 }
@@ -302,13 +343,13 @@ extension NowPlayingController: ControlRotationDelegate {
             let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 slider?.value += 0.1
-                
             }
         } else {
             print("rotateClockwise")
             var time = self.trackTime.value
             time = min(time + 3, trackTime.maximumValue)
             setTime(time: time)
+            updateCircleProgress()
         }
         
         
@@ -322,16 +363,14 @@ extension NowPlayingController: ControlRotationDelegate {
             let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 slider?.value -= 0.1
-                
             }
         } else {
             print("rotateAnticlockwise")
             var time = self.trackTime.value
             time = max(time - 3, trackTime.minimumValue)
             setTime(time: time)
+            updateCircleProgress()
         }
-        
-        
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
     }
@@ -343,12 +382,13 @@ extension NowPlayingController: ControlRotationDelegate {
     
     func endRotate() {
         if !isSeeking {return}
+        isSeeking = false
         let time = self.trackTime.value
         MusicPlayer.mediaPlayer.play()
         MusicPlayer.mediaPlayer.currentPlaybackTime = TimeInterval(time)
         startUpdateCurrentTime()
-        isSeeking = false
         setNormalThumb()
+        print("End")
     }
     
     func menuButtonPressed() {
@@ -379,5 +419,17 @@ extension NowPlayingController: ControlRotationDelegate {
         let config = UIImage.SymbolConfiguration(pointSize: 6, weight: .bold)
         let thumbImage = UIImage(systemName: "circle.fill", withConfiguration: config)?.withTintColor(Theme.currentMode().textColor, renderingMode: .alwaysOriginal)
         self.trackTime.setThumbImage(thumbImage, for: .normal)
+    }
+}
+
+extension UIImageView {
+
+    func makeRounded() {
+
+        self.layer.borderWidth = 1
+        self.layer.masksToBounds = true
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.cornerRadius = self.frame.height / 2
+        self.clipsToBounds = true
     }
 }

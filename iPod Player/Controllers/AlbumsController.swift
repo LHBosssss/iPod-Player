@@ -19,6 +19,7 @@ class AlbumsController: UICollectionViewController {
         }
     }
     
+    var showAllSongs = false
     private var listAlbums = [MPMediaItemCollection]()
     private var currentItem = 0
     
@@ -82,7 +83,7 @@ class AlbumsController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumCell
         cell.albumCollection = listAlbums[indexPath.item]
-        if indexPath.item == 0 {
+        if indexPath.item == 0 && showAllSongs {
             cell.isAllSongsCollection = true
         }
 

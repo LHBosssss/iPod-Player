@@ -110,6 +110,7 @@ class ArtistsController: UIViewController {
         let albumsView = AlbumsController(collectionViewLayout: layout)
         albumsView.collectionView.frame = frame
         albumsView.albums = albumsCollection
+        albumsView.showAllSongs = true
         self.navigationController?.pushViewController(albumsView, animated: true)
     }
 }

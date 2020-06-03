@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EF0A807A2483E6A300262CBD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A80792483E6A300262CBD /* Theme.swift */; };
 		EF0A807C2484040B00262CBD /* ThemeSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A807B2484040B00262CBD /* ThemeSelectController.swift */; };
+		EF0A807E24849C5D00262CBD /* CircleArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A807D24849C5D00262CBD /* CircleArtwork.swift */; };
 		EF1BF1A62483DCC6009AB63D /* iPodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1BF1A52483DCC6009AB63D /* iPodView.swift */; };
 		EF38C58D247FDF9600F9B95F /* ThemeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF38C58C247FDF9600F9B95F /* ThemeModel.swift */; };
 		EF3C517924824D09001BF7C7 /* InformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C517824824D09001BF7C7 /* InformationCell.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		EF0A80792483E6A300262CBD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		EF0A807B2484040B00262CBD /* ThemeSelectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSelectController.swift; sourceTree = "<group>"; };
+		EF0A807D24849C5D00262CBD /* CircleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleArtwork.swift; sourceTree = "<group>"; };
 		EF1BF1A52483DCC6009AB63D /* iPodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPodView.swift; sourceTree = "<group>"; };
 		EF38C58C247FDF9600F9B95F /* ThemeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModel.swift; sourceTree = "<group>"; };
 		EF3C517824824D09001BF7C7 /* InformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationCell.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				EF3C517824824D09001BF7C7 /* InformationCell.swift */,
 				EF4C41A5247B64D200045E29 /* ClickWheelView.swift */,
 				EF1BF1A52483DCC6009AB63D /* iPodView.swift */,
+				EF0A807D24849C5D00262CBD /* CircleArtwork.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				EF3C517924824D09001BF7C7 /* InformationCell.swift in Sources */,
 				EF1BF1A62483DCC6009AB63D /* iPodView.swift in Sources */,
 				EF742A05247BB57300A2A28B /* MusicPlayer.swift in Sources */,
+				EF0A807E24849C5D00262CBD /* CircleArtwork.swift in Sources */,
 				EF9A5A94247E15A000F6F748 /* PlaylistsController.swift in Sources */,
 				EF4C4190247B558A00045E29 /* SceneDelegate.swift in Sources */,
 				EF9A5A96247E18F600F6F748 /* SongsController.swift in Sources */,

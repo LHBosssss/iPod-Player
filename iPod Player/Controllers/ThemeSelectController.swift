@@ -17,7 +17,11 @@ class ThemeSelectController: UIViewController {
         return themes
     }()
     private let themes = Theme.listTheme
-    private var currentRow = 0
+    private var currentRow = 0 {
+        didSet {
+            changeTheme()
+        }
+    }
     // SUPER VIEW DID LOAD
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +37,7 @@ class ThemeSelectController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         currentRow = UserDefaults.standard.value(forKey: "theme") as! Int
-        themesTable.reloadData()
-        themesTable.scrollToRow(at: IndexPath(row: currentRow, section: 0), at: .middle, animated: true)
-        themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
+        changeTheme()
     }
     override func viewWillDisappear(_ animated: Bool) {
         print("viewWillDisappear")
@@ -52,10 +54,23 @@ class ThemeSelectController: UIViewController {
         themesTable.dataSource = self
         view.addSubview(themesTable)
         themesTable.frame = view.frame
+        print("created themeselection")
+    }
+    
+    private func changeTheme() {
+        let selectedTheme = themes[currentRow]
+        MenuController.iPod.changeTheme(color: selectedTheme)
+        themesTable.backgroundColor = Theme.currentMode().bgColor
+        themesTable.reloadData()
+        themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: false, scrollPosition: .middle)
     }
 }
 
-extension ThemeSelectController: UITableViewDataSource, UITableViewDelegate {
+extension ThemeSelectController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return themes.count
     }
@@ -85,11 +100,6 @@ extension ThemeSelectController: ControlRotationDelegate {
         currentRow += 1
         currentRow = currentRow > themes.count - 1 ? themes.count - 1 : currentRow
         themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
-        let selectedTheme = themes[currentRow]
-        MenuController.iPod.changeTheme(color: selectedTheme)
-        themesTable.backgroundColor = Theme.currentMode().bgColor
-        themesTable.reloadData()
-        themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: false, scrollPosition: .middle)
         
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
@@ -99,12 +109,6 @@ extension ThemeSelectController: ControlRotationDelegate {
         currentRow -= 1
         currentRow = currentRow < 0 ? 0 : currentRow
         themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
-        
-        let selectedTheme = themes[currentRow]
-        MenuController.iPod.changeTheme(color: selectedTheme)
-        themesTable.backgroundColor = Theme.currentMode().bgColor
-        themesTable.reloadData()
-        themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: false, scrollPosition: .middle)
 
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
@@ -116,11 +120,7 @@ extension ThemeSelectController: ControlRotationDelegate {
     
     func selectButtonPressed() {
         UserDefaults.standard.set(currentRow, forKey: "theme")
-        let selectedTheme = themes[currentRow]
-        MenuController.iPod.changeTheme(color: selectedTheme)
-        themesTable.backgroundColor = Theme.currentMode().bgColor
-        themesTable.reloadData()
-        themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .none)
+        changeTheme()
     }
 }
 
