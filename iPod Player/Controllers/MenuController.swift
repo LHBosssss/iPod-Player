@@ -30,7 +30,6 @@ class MenuController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         checkUserDefault()
         setupMenuView()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleRunFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +37,7 @@ class MenuController: UIViewController {
         print("viewWillAppear")
         MenuController.iPod.clickWheelView.delegate = self
         menuTable.backgroundColor = Theme.currentMode().bgColor
-            menuTable.reloadData()
+        menuTable.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,12 +51,6 @@ class MenuController: UIViewController {
     
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-    
-    @objc func handleRunFromBackground() {
-        if MusicPlayer.mediaPlayer.playbackState == .playing {
-            selectedNowPlaying()
-        }
     }
   
     func checkUserDefault() {

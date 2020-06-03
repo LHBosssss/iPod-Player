@@ -58,6 +58,7 @@ class ThemeSelectController: UIViewController {
     }
     
     private func changeTheme() {
+        print(currentRow)
         let selectedTheme = themes[currentRow]
         MenuController.iPod.changeTheme(color: selectedTheme)
         themesTable.backgroundColor = Theme.currentMode().bgColor
@@ -97,8 +98,7 @@ extension ThemeSelectController: UITableViewDataSource {
 
 extension ThemeSelectController: ControlRotationDelegate {
     func rotateClockwise() {
-        currentRow += 1
-        currentRow = currentRow > themes.count - 1 ? themes.count - 1 : currentRow
+        currentRow = currentRow + 1 > themes.count - 1 ? themes.count - 1 : currentRow + 1
         themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
         
         let generator = UIImpactFeedbackGenerator(style: .light)
@@ -106,8 +106,7 @@ extension ThemeSelectController: ControlRotationDelegate {
     }
     
     func rotateAnticlockwise() {
-        currentRow -= 1
-        currentRow = currentRow < 0 ? 0 : currentRow
+        currentRow = currentRow - 1 < 0 ? 0 : currentRow - 1
         themesTable.selectRow(at: IndexPath(row: currentRow, section: 0), animated: true, scrollPosition: .middle)
 
         let generator = UIImpactFeedbackGenerator(style: .light)
